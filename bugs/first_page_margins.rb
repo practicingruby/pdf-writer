@@ -8,7 +8,7 @@ title      = "Founder and CEO, Serial Entrepreneur extra extra"
 tags       = %w(research social technology burningman gobots transformers)
 
 pdf = PDF::Writer.new(:paper => [0,0,288,432]) # A6 
-pdf.margins_pt(5, 5, 0, 5)
+pdf.margins_pt(5, 5, 0, 5)                              
 pdf.select_font "Helvetica" 
 
 (0..5).each do |page|

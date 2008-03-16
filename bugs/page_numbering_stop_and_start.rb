@@ -1,3 +1,4 @@
+# FIXED 1.1.8
 require File.dirname(__FILE__) + "/../lib/pdf/writer"
 
 pdf = PDF::Writer.new
