@@ -16,10 +16,10 @@ require 'cgi'
 require 'open-uri'
 
 begin
-  require 'progressbar'
+  require 'ruby-progressbar'
 rescue LoadError
   class ProgressBar #:nodoc:
-    def initialize(*args)
+    def create(*args)
     end
     def method_missing(*args)
     end
@@ -536,7 +536,7 @@ class PDF::TechBook < PDF::Writer
 
     document.each do |line|
     begin
-      progress.inc if progress
+      progress.increment if progress
       @techbook_line__ += 1
 
       next if line =~ %r{^#}o
@@ -616,7 +616,7 @@ class PDF::TechBook < PDF::Writer
 
       # TODO -- implement tocdots as a replace tag and a single drawing tag.
     @table_of_contents.each do |entry|
-      progress.inc if progress
+      progress.increment if progress
 
       info =  "<c:ilink dest='#{entry[:xref]}'>#{entry[:title]}</c:ilink>"
       info << "<C:tocdots level='#{entry[:level]}' page='#{entry[:page]}' xref='#{entry[:xref]}'/>"
@@ -872,12 +872,12 @@ class PDF::TechBook < PDF::Writer
     pdf.techbook_source_dir = File.expand_path(dirn)
 
     document = open(files[:document]) { |io| io.read.split($/) }
-    progress = ProgressBar.new(base.capitalize, document.size)
+    progress = ProgressBar.create(title: base.capitalize, total: document.size)
     pdf.techbook_parse(document, progress)
     progress.finish
 
     if pdf.generate_table_of_contents?
-      progress = ProgressBar.new("TOC", pdf.table_of_contents.size)
+      progress = ProgressBar.create(title: "TOC", total: pdf.table_of_contents.size)
       pdf.techbook_toc(progress)
       progress.finish
     end
